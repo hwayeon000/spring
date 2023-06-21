@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.user.mapper.UserMapper">
+
+	<select id="login" parameterType="kr.board.entity.User"
+		resultType="kr.board.entity.User">
+		select * from t_user where user_id=#{user_id}
+	</select>
+
+	<select id="kakaoLogin" resultType="kr.board.entity.User">
+		select * from t_user where user_id=#{user_id}
+	</select>
+
+	<select id="selectUser" parameterType="java.util.HashMap" resultType="kr.board.entity.User">
+		select * from t_user where user_id=#{email}
+	</select>
+	
+	<select id="joinPerMonth" resultType="kr.board.entity.CountJoin">
+		 <![CDATA[
+			select to_char(user_joindate, 'yyyy-mm') as month
+			 	 , count(user_id) as num
+		  	  from t_user
+			group by to_char(user_joindate, 'yyyy-mm')
+			order by to_char(user_joindate, 'yyyy-mm')
+		 ]]>
+	</select>
+	
+	<select id="kidsAge" resultType="String">
+		select USER_CHILDBDATE
+		  from t_user
+	</select>
+	
+	<select id="region" resultType="kr.board.entity.Region">
+		 select user_address, count(user_id) as region_count
+		  from t_user
+		 group by user_address
+	</select>
+
+	<insert id="join" parameterType="kr.board.entity.User">
+		INSERT INTO t_user (
+		  user_id
+		, user_pw
+		, user_name
+		, user_bdate
+		, user_childname
+		, user_childbdate
+		, user_relation
+		, user_address
+		, user_joindate
+		, user_isagreed) VALUES (
+		  #{user_id}
+		, #{user_pw}
+		, #{user_name}
+		, #{user_bdate}
+		, #{user_childname}
+		, #{user_childbdate}
+		, #{user_relation}
+		, #{user_address}
+		, sysdate
+		, #{user_isagreed})
+	</insert>
+
+	<insert id="kakaoJoin" parameterType="java.util.HashMap">
+		INSERT INTO t_user (
+		  user_id
+		, user_pw
+		, user_name
+		, user_bdate
+		, user_childname
+		, user_childbdate
+		, user_relation
+		, user_address
+		, user_joindate
+		, user_isagreed) VALUES (
+		  #{email}
+		, 1234
+		, #{nickname}
+		, null
+		, null
+		, null
+		, null
+		, null
+		, sysdate
+		, null)
+	</insert>
+
+	<!-- <update id="kakaoJoinDetail" parameterType="kr.board.entity.User">
+	update t_user set user_bdate =#{user_bdate}
+		, user_childname = #{user_childname}
+		, user_childbdate = #{user_childbdate}
+		, user_relation = #{user_relation}
+		, user_address = #{user_address}
+		, user_isagreed = #{user_isagreed}
+		where user_id = #{user_id}
+	</update> -->
+	
+	<insert id="kakaoJoinDetail" parameterType="kr.board.entity.User">
+		INSERT INTO t_user (
+			  user_id
+			, user_pw
+			, user_name
+			, user_bdate
+			, user_childname
+			, user_childbdate
+			, user_relation
+			, user_address
+			, user_joindate
+			, user_isagreed) VALUES (
+			  #{user_id}
+			, #{user_pw}
+			, #{user_name}
+			, #{user_bdate}
+			, #{user_childname}
+			, #{user_childbdate}
+			, #{user_relation}
+			, #{user_address}
+			, sysdate
+			, #{user_isagreed})
+	</insert>
+	
+	<select id="user" resultType="kr.board.entity.User">
+		select * from t_user
+	</select>
+	
+
+</mapper>
+
+
+
+
+
+
+
