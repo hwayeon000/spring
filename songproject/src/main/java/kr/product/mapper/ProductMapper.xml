@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.product.mapper.ProductMapper">
+
+	<select id="showProducts" resultType="kr.board.entity.Product">
+		select pro.product_seq, pro.cate_seq, pro.photo_seq, pro.product_name, pro.product_price, pro.product_content, pro.product_date, pro.product_have, pro.product_rent, pro.product_rest,
+			   ph.photo_b_name, ph.photo_s_name, ph.photo_extension, ph.photo_path, ph.photo_size, ph.photo_date
+		from t_products pro, t_photos ph 
+		where pro.photo_seq = ph.photo_seq 
+		order by pro.cate_seq desc
+	</select>
+	
+	<select id="productDetail" resultType="kr.board.entity.Product" parameterType="int">
+		SELECT *  FROM t_products d, t_photos p WHERE d.product_seq=p.product_seq and d.product_seq=#{product_seq}
+	</select>
+
+</mapper>
